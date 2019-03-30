@@ -1,89 +1,74 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package osproject;
 
 import java.util.Scanner;
 
-/**
- *
- * @author PROTYAY
- */
+
 public class SJF2 {
-    public static void main(String args[])
-	{
-            int n;
-		float avgwt,avgta;
+    public static void main(String args[]) {
+Scanner sc = new Scanner(System.in);
+int n, BT[], WT[], TAT[],AT[];
+
+System.out.println("Enter no of process");
+n = sc.nextInt();
+AT=new int[n+1];
+BT = new int[n + 1];
+WT = new int[n + 1];
+TAT = new int[n + 1];
+float AWT = 0,ATAT = 0;
+System.out.println("Enter Arrival time for each process");
+System.out.println("Enter Burst time for each process");
+for (int i = 0; i < n; i++) {
+System.out.println("enter process " + (i+1) + " arrival time: ");
+AT[i] = sc.nextInt();
+System.out.println("Enter BT for process " + (i + 1));
+BT[i] = sc.nextInt();
+}
+
+
  
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("ENTER no OF PROCESS: ");
-            n = sc.nextInt();
-            int pid[] = new int[n];
-            int ar[] = new int[n];
-            int bt[] = new int[n];
-            int ct[] = new int[n];
-            int ta[] = new int[n];
-            int wt[] = new int[n];
-            int temp;
-            avgwt = 0;
-            avgta = 0;
-            for(int i = 0; i < n; i++)
-            {
-                System.out.println("enter process " + (i+1) + " arrival time: ");
-                ar[i] = sc.nextInt();
-                System.out.println("enter process " + (i+1) + " burst time: ");
-                bt[i] = sc.nextInt();
-                pid[i] = i+1;
-            }
-            for(int i=0;i<n;i++)
-            {
-                for(int  j=0;j<n-(i+1);j++)
-                {
-                    if( ar[j]>ar[j+1] )
-                    {
-                        temp = ar[j];
-                        ar[j] = ar[j+1];
-                        ar[j+1] = temp;
-                        temp = bt[j];
-                        bt[j] = bt[j+1];
-                        bt[j+1] = temp;
-                        temp = pid[j];
-                        pid[j] = pid[j+1];
-                        pid[j+1] = temp;
-                    }
-                }
-            }
-            for(int  i = 0 ; i < n; i++)
-            {
-                if( i == 0)
-                {
-                    ct[i] = ar[i] + bt[i];
-                }
-                else
-                {
-                    if( ar[i] > ct[i-1])
-                    {
-                        ct[i] = ar[i] + bt[i];
-                    }
-                    else
-                        ct[i] = ct[i-1] + bt[i];
-			}
-			ta[i] = ct[i] - ar[i] ;          
-			wt[i] = ta[i] - bt[i] ;          
-			avgwt += wt[i] ;               
-			avgta += ta[i] ;               
-		}
-            System.out.println("\nPId  Arrival  Brust  Complete TurnAround Waiting");
-            for(int  i = 0 ; i< n;  i++)
-		{
-			System.out.println(pid[i] + "\t" + ar[i] + "\t" + bt[i]*bt[i] + "\t" + ct[i] + "  \t  " + ta[i] + "   \t    "  + wt[i] ) ;
-		}
-        }
-		System.out.println("\naverage waiting time: "+ (avgwt/n));     
-		System.out.println("average turnaround time:"+(avgta/n));    
-	}
+for (int i = 0; i < n; i++) {
+WT[i] = 0;
+TAT[i] = 0;
+}
+int temp;
+for (int i = 0; i < n; i++) {
+for (int j = 0; j < n - 1; j++) {
+if (BT[j] > BT[j + 1]) {
+temp = BT[j];
+BT[j] = BT[j + 1];
+BT[j + 1] = temp;
+temp = WT[j];
+WT[j] = WT[j + 1];
+WT[j + 1] = temp;
+
+}
+}
+}
+
+for (int i = 0; i < n; i++) {
+TAT[i] = BT[i] + WT[i];
+WT[i + 1] = TAT[i];
+
+}
+
+TAT[n] = WT[n] + BT[n];
+System.out.println(" PROCESS    AT      BT      WT      TAT ");
+for (int i = 0; i < n; i++)
+System.out.println("     " + i +"      "+AT[i]+ "       " + BT[i]*BT[i] + "       " + WT[i] + "        " + TAT[i]);
+
+for (int j = 0; j < n; j++) 
+{
+AWT += WT[j];
+AWT = AWT / n;
+ATAT +=TAT[j];
+ATAT=ATAT / n;
+System.out.println("Avg waiting time=" + AWT + "\n");
+System.out.println("Avg waiting time=" + ATAT + "\n");
+}
+
+
+    }
 }
     
 
